@@ -7,7 +7,7 @@ export const config = {
   ],
 }
 
-export default async function proxy(req) {
+export default async function middleware(req) {
   let response = NextResponse.next({
     request: {
       headers: req.headers,
@@ -34,7 +34,7 @@ export default async function proxy(req) {
 
   const { data: { session } } = await supabase.auth.getSession()
 
-  const protectedRoutes = ['/items', '/inventory', '/purchases', '/sales', '/products', '/expenses', '/dashboard']
+  const protectedRoutes = ['/inventory', '/sales', '/products', '/expenses', '/dashboard']
   const isProtectedRoute = protectedRoutes.some(route => req.nextUrl.pathname.startsWith(route))
   
   if (isProtectedRoute && !session) {
