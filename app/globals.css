@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Base styles */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Ensure minimum touch targets on mobile */
+button, a {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, select, textarea {
+  font-size: 16px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile table scroll */
+.mobile-table-scroll {
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .mobile-table-scroll {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
