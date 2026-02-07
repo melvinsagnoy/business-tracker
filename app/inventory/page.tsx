@@ -26,7 +26,6 @@ export default function InventoryPage() {
         return
       }
 
-      // Fetch inventory with product details
       const { data, error } = await supabase
         .from('inventory')
         .select(`
@@ -107,71 +106,45 @@ export default function InventoryPage() {
   }, 0)
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">📊 Inventory Monitor</h1>
-        <div className="flex gap-3">
-          <button
-            onClick={() => router.push('/expenses')}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            💸 Expenses
-          </button>
-          <button
-            onClick={() => router.push('/products')}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            📦 Products
-          </button>
-          <button
-            onClick={() => router.push('/sales')}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            💰 Sales
-          </button>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-          >
-            📈 Dashboard
-          </button>
-        </div>
+    <div className="p-3 sm:p-6 max-w-7xl mx-auto pb-24 sm:pb-6">
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4">📊 Inventory</h1>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-purple-100 p-4 rounded-lg border border-purple-300">
-          <h3 className="text-sm text-purple-800 font-medium">Total Products</h3>
-          <p className="text-2xl font-bold text-purple-900">{inventory.length}</p>
+      {/* Summary Cards - Mobile Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <div className="bg-purple-100 p-3 sm:p-4 rounded-lg border border-purple-300">
+          <h3 className="text-xs sm:text-sm text-purple-800 font-medium">Total Products</h3>
+          <p className="text-xl sm:text-2xl font-bold text-purple-900">{inventory.length}</p>
         </div>
-        <div className="bg-red-100 p-4 rounded-lg border border-red-300">
-          <h3 className="text-sm text-red-800 font-medium">⚠️ Low Stock Items</h3>
-          <p className="text-2xl font-bold text-red-900">{lowStockItems.length}</p>
+        <div className="bg-red-100 p-3 sm:p-4 rounded-lg border border-red-300">
+          <h3 className="text-xs sm:text-sm text-red-800 font-medium">⚠️ Low Stock Items</h3>
+          <p className="text-xl sm:text-2xl font-bold text-red-900">{lowStockItems.length}</p>
         </div>
-        <div className="bg-blue-100 p-4 rounded-lg border border-blue-300">
-          <h3 className="text-sm text-blue-800 font-medium">Inventory Value</h3>
-          <p className="text-2xl font-bold text-blue-900">₱{totalValue.toFixed(2)}</p>
+        <div className="bg-blue-100 p-3 sm:p-4 rounded-lg border border-blue-300">
+          <h3 className="text-xs sm:text-sm text-blue-800 font-medium">Inventory Value</h3>
+          <p className="text-xl sm:text-2xl font-bold text-blue-900">₱{totalValue.toFixed(2)}</p>
         </div>
       </div>
 
       {/* Workflow Guide */}
-      <div className="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
-        <p className="text-blue-800">
+      <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 border border-blue-200">
+        <p className="text-blue-800 text-xs sm:text-sm">
           <strong>📋 Step 3:</strong> After creating products, count your finished units and add them to inventory here.
           Inventory automatically decreases when you record sales.
         </p>
       </div>
 
       {showAddForm && addingItem && (
-        <form onSubmit={handleSubmitAddStock} className="bg-gray-50 p-4 rounded mb-6 border">
-          <h2 className="text-xl font-semibold mb-4">Add Stock - {addingItem.products?.name}</h2>
-          <div className="grid grid-cols-3 gap-4">
+        <form onSubmit={handleSubmitAddStock} className="bg-gray-50 p-3 sm:p-4 rounded mb-6 border">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">Add Stock - {addingItem.products?.name}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Current Stock</label>
               <input
                 type="text"
                 value={parseFloat(addingItem.quantity).toFixed(2)}
-                className="p-2 border rounded w-full bg-gray-100"
+                className="p-2.5 sm:p-2 border rounded w-full bg-gray-100"
                 disabled
               />
             </div>
@@ -182,7 +155,7 @@ export default function InventoryPage() {
                 step="0.01"
                 value={addQuantity}
                 onChange={e => setAddQuantity(e.target.value)}
-                className="p-2 border rounded w-full"
+                className="p-2.5 sm:p-2 border rounded w-full"
                 placeholder="0"
                 required
                 min="0.01"
@@ -193,15 +166,15 @@ export default function InventoryPage() {
               <input
                 type="text"
                 value={(parseFloat(addingItem.quantity) + parseFloat(addQuantity || '0')).toFixed(2)}
-                className="p-2 border rounded w-full bg-gray-100 font-semibold text-green-600"
+                className="p-2.5 sm:p-2 border rounded w-full bg-gray-100 font-semibold text-green-600"
                 disabled
               />
             </div>
           </div>
-          <div className="flex gap-2 mt-4">
+          <div className="flex flex-col sm:flex-row gap-2 mt-4">
             <button
               type="submit"
-              className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+              className="w-full sm:w-auto bg-green-500 text-white px-6 py-2.5 sm:py-2 rounded hover:bg-green-600 font-medium"
             >
               Add Stock
             </button>
@@ -212,7 +185,7 @@ export default function InventoryPage() {
                 setAddingItem(null)
                 setAddQuantity('')
               }}
-              className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+              className="w-full sm:w-auto bg-gray-500 text-white px-6 py-2.5 sm:py-2 rounded hover:bg-gray-600"
             >
               Cancel
             </button>
@@ -221,75 +194,143 @@ export default function InventoryPage() {
       )}
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center">Loading...</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border p-3 text-left">Product Name</th>
-                <th className="border p-3 text-left">Category</th>
-                <th className="border p-3 text-right">Current Stock</th>
-                <th className="border p-3 text-left">Unit</th>
-                <th className="border p-3 text-right">Reorder Level</th>
-                <th className="border p-3 text-right">Value (Cost)</th>
-                <th className="border p-3 text-center">Status</th>
-                <th className="border p-3 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventory.map((item: any) => {
-                const needsReorder = item.quantity <= item.reorder_level
-                const stockValue = item.quantity * (item.products?.cost_per_unit || 0)
-                
-                return (
-                  <tr key={item.id} className={needsReorder ? 'bg-red-50' : 'hover:bg-gray-50'}>
-                    <td className="border p-3 font-medium">{item.products?.name || 'Unknown'}</td>
-                    <td className="border p-3">{item.products?.category || '-'}</td>
-                    <td className="border p-3 text-right">
-                      <span className={`font-bold text-lg ${needsReorder ? 'text-red-600' : 'text-green-600'}`}>
-                        {parseFloat(item.quantity).toFixed(2)}
+        <>
+          {/* Mobile Card View */}
+          <div className="sm:hidden space-y-3">
+            {inventory.map((item: any) => {
+              const needsReorder = item.quantity <= item.reorder_level
+              const stockValue = item.quantity * (item.products?.cost_per_unit || 0)
+              
+              return (
+                <div 
+                  key={item.id} 
+                  className={`border rounded-lg p-3 shadow-sm ${needsReorder ? 'bg-red-50 border-red-300' : 'bg-white'}`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-base">{item.products?.name || 'Unknown'}</h3>
+                      {item.products?.category && (
+                        <span className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded inline-block mt-1">
+                          {item.products.category}
+                        </span>
+                      )}
+                    </div>
+                    {needsReorder && (
+                      <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium ml-2">
+                        ⚠️ Low
                       </span>
-                    </td>
-                    <td className="border p-3">{item.unit || 'pcs'}</td>
-                    <td className="border p-3 text-right">
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                    <div>
+                      <p className="text-xs text-gray-600">Current Stock</p>
+                      <p className={`font-bold text-lg ${needsReorder ? 'text-red-600' : 'text-green-600'}`}>
+                        {parseFloat(item.quantity).toFixed(2)} {item.unit || 'pcs'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Value</p>
+                      <p className="font-semibold">₱{stockValue.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600">Reorder Level</p>
                       <input
                         type="number"
                         step="0.01"
                         value={item.reorder_level}
                         onChange={e => handleUpdateReorderLevel(item.id, e.target.value)}
-                        className="w-20 p-1 border rounded text-right"
+                        className="w-full p-1 border rounded text-sm"
                       />
-                    </td>
-                    <td className="border p-3 text-right font-semibold">₱{stockValue.toFixed(2)}</td>
-                    <td className="border p-3 text-center">
-                      {needsReorder ? (
-                        <span className="bg-red-500 text-white px-3 py-1 rounded text-sm font-medium">
-                          ⚠️ Low Stock
-                        </span>
-                      ) : (
-                        <span className="bg-green-500 text-white px-3 py-1 rounded text-sm font-medium">
-                          ✓ Good
-                        </span>
-                      )}
-                    </td>
-                    <td className="border p-3 text-center">
+                    </div>
+                    <div className="flex items-end">
                       <button
                         onClick={() => handleAddStock(item)}
-                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                        className="w-full bg-blue-500 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 font-medium"
                       >
                         + Add Stock
                       </button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-          {inventory.length === 0 && (
-            <p className="text-center text-gray-500 mt-4">No inventory records. Add products first!</p>
-          )}
-        </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+            {inventory.length === 0 && (
+              <p className="text-center text-gray-500 py-8 text-sm">No inventory records. Add products first!</p>
+            )}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border p-3 text-left">Product Name</th>
+                  <th className="border p-3 text-left">Category</th>
+                  <th className="border p-3 text-right">Current Stock</th>
+                  <th className="border p-3 text-left">Unit</th>
+                  <th className="border p-3 text-right">Reorder Level</th>
+                  <th className="border p-3 text-right">Value (Cost)</th>
+                  <th className="border p-3 text-center">Status</th>
+                  <th className="border p-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inventory.map((item: any) => {
+                  const needsReorder = item.quantity <= item.reorder_level
+                  const stockValue = item.quantity * (item.products?.cost_per_unit || 0)
+                  
+                  return (
+                    <tr key={item.id} className={needsReorder ? 'bg-red-50' : 'hover:bg-gray-50'}>
+                      <td className="border p-3 font-medium">{item.products?.name || 'Unknown'}</td>
+                      <td className="border p-3">{item.products?.category || '-'}</td>
+                      <td className="border p-3 text-right">
+                        <span className={`font-bold text-lg ${needsReorder ? 'text-red-600' : 'text-green-600'}`}>
+                          {parseFloat(item.quantity).toFixed(2)}
+                        </span>
+                      </td>
+                      <td className="border p-3">{item.unit || 'pcs'}</td>
+                      <td className="border p-3 text-right">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={item.reorder_level}
+                          onChange={e => handleUpdateReorderLevel(item.id, e.target.value)}
+                          className="w-20 p-1 border rounded text-right"
+                        />
+                      </td>
+                      <td className="border p-3 text-right font-semibold">₱{stockValue.toFixed(2)}</td>
+                      <td className="border p-3 text-center">
+                        {needsReorder ? (
+                          <span className="bg-red-500 text-white px-3 py-1 rounded text-sm font-medium">
+                            ⚠️ Low Stock
+                          </span>
+                        ) : (
+                          <span className="bg-green-500 text-white px-3 py-1 rounded text-sm font-medium">
+                            ✓ Good
+                          </span>
+                        )}
+                      </td>
+                      <td className="border p-3 text-center">
+                        <button
+                          onClick={() => handleAddStock(item)}
+                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                        >
+                          + Add Stock
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+            {inventory.length === 0 && (
+              <p className="text-center text-gray-500 mt-4">No inventory records. Add products first!</p>
+            )}
+          </div>
+        </>
       )}
     </div>
   )
