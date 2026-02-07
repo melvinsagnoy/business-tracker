@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '../../lib/supabase'
 
 export default function InventoryPage() {
-  const [inventory, setInventory] = useState([])
+  const [inventory, setInventory] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
   const [addingItem, setAddingItem] = useState(null)
@@ -101,8 +101,8 @@ export default function InventoryPage() {
     }
   }
 
-  const lowStockItems = inventory.filter(item => item.quantity <= item.reorder_level)
-  const totalValue = inventory.reduce((sum, item) => {
+  const lowStockItems = inventory.filter((item: any) => item.quantity <= item.reorder_level)
+  const totalValue = inventory.reduce((sum: number, item: any) => {
     return sum + (item.quantity * (item.products?.cost_per_unit || 0))
   }, 0)
 
@@ -192,7 +192,7 @@ export default function InventoryPage() {
               <label className="block text-sm font-medium mb-1">New Total</label>
               <input
                 type="text"
-                value={(parseFloat(addingItem.quantity) + parseFloat(addQuantity || 0)).toFixed(2)}
+                value={(parseFloat(addingItem.quantity) + parseFloat(addQuantity || '0')).toFixed(2)}
                 className="p-2 border rounded w-full bg-gray-100 font-semibold text-green-600"
                 disabled
               />
@@ -238,7 +238,7 @@ export default function InventoryPage() {
               </tr>
             </thead>
             <tbody>
-              {inventory.map(item => {
+              {inventory.map((item: any) => {
                 const needsReorder = item.quantity <= item.reorder_level
                 const stockValue = item.quantity * (item.products?.cost_per_unit || 0)
                 

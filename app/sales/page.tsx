@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '../../lib/supabase'
 
 export default function SalesPage() {
-  const [sales, setSales] = useState([])
-  const [products, setProducts] = useState([])
+  const [sales, setSales] = useState<any[]>([])
+  const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
@@ -74,7 +74,7 @@ export default function SalesPage() {
   }
 
   const handleProductChange = (productId) => {
-    const product = products.find(p => p.id === productId)
+    const product = products.find((p: any) => p.id === productId)
     if (product) {
       setFormData({
         ...formData,
@@ -89,7 +89,7 @@ export default function SalesPage() {
     const supabase = getSupabaseClient()
 
     try {
-      const product = products.find(p => p.id === formData.product_id)
+      const product = products.find((p: any) => p.id === formData.product_id)
       if (!product) {
         alert('Please select a product.')
         return
@@ -176,9 +176,9 @@ export default function SalesPage() {
     }
   }
 
-  const totalRevenue = sales.reduce((sum, sale) => sum + parseFloat(sale.total_revenue), 0)
-  const totalCost = sales.reduce((sum, sale) => sum + parseFloat(sale.total_cost), 0)
-  const totalProfit = sales.reduce((sum, sale) => sum + parseFloat(sale.profit), 0)
+  const totalRevenue = sales.reduce((sum: number, sale: any) => sum + parseFloat(sale.total_revenue), 0)
+  const totalCost = sales.reduce((sum: number, sale: any) => sum + parseFloat(sale.total_cost), 0)
+  const totalProfit = sales.reduce((sum: number, sale: any) => sum + parseFloat(sale.profit), 0)
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -281,7 +281,7 @@ export default function SalesPage() {
                 required
               >
                 <option value="">Select Product</option>
-                {products.map(product => {
+                {products.map((product: any) => {
                   // Handle both array and direct object inventory
                   let stock = 0
                   if (Array.isArray(product.inventory)) {
@@ -344,7 +344,7 @@ export default function SalesPage() {
               <label className="block text-sm font-medium mb-1">Total Amount</label>
               <input
                 type="text"
-                value={`₱${(parseFloat(formData.quantity || 0) * parseFloat(formData.price_per_unit || 0)).toFixed(2)}`}
+                value={`₱${(parseFloat(formData.quantity || '0') * parseFloat(formData.price_per_unit || '0')).toFixed(2)}`}
                 className="p-2 border rounded w-full bg-gray-100 font-semibold text-green-600"
                 disabled
               />
@@ -357,7 +357,7 @@ export default function SalesPage() {
                 value={formData.notes}
                 onChange={e => setFormData({ ...formData, notes: e.target.value })}
                 className="p-2 border rounded w-full"
-                rows="2"
+                rows={2}
               />
             </div>
           </div>
@@ -390,7 +390,7 @@ export default function SalesPage() {
               </tr>
             </thead>
             <tbody>
-              {sales.map(sale => (
+              {sales.map((sale: any) => (
                 <tr key={sale.id} className="hover:bg-gray-50">
                   <td className="border p-3">{new Date(sale.date).toLocaleDateString()}</td>
                   <td className="border p-3 font-medium">{sale.products?.name || 'Unknown'}</td>

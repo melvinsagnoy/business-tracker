@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '../../lib/supabase'
 
 export default function ExpensesPage() {
-  const [expenses, setExpenses] = useState([])
+  const [expenses, setExpenses] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
@@ -98,9 +98,9 @@ export default function ExpensesPage() {
     }
   }
 
-  const totalExpenses = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0)
-  const materialExpenses = expenses.filter(e => e.category === 'materials').reduce((sum, e) => sum + parseFloat(e.amount), 0)
-  const operationalExpenses = expenses.filter(e => e.category !== 'materials').reduce((sum, e) => sum + parseFloat(e.amount), 0)
+  const totalExpenses = expenses.reduce((sum: number, expense: any) => sum + parseFloat(expense.amount), 0)
+  const materialExpenses = expenses.filter((e: any) => e.category === 'materials').reduce((sum: number, e: any) => sum + parseFloat(e.amount), 0)
+  const operationalExpenses = expenses.filter((e: any) => e.category !== 'materials').reduce((sum: number, e: any) => sum + parseFloat(e.amount), 0)
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -238,7 +238,7 @@ export default function ExpensesPage() {
                 value={formData.notes}
                 onChange={e => setFormData({ ...formData, notes: e.target.value })}
                 className="p-2 border rounded w-full"
-                rows="2"
+                rows={2}
               />
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function ExpensesPage() {
               </tr>
             </thead>
             <tbody>
-              {expenses.map(expense => (
+              {expenses.map((expense: any) => (
                 <tr key={expense.id} className="hover:bg-gray-50">
                   <td className="border p-3">{new Date(expense.date).toLocaleDateString()}</td>
                   <td className="border p-3">

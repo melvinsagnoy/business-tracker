@@ -5,9 +5,16 @@ import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '../../lib/supabase'
 
 export default function DashboardPage() {
-  const [summary, setSummary] = useState(null)
-  const [recentSales, setRecentSales] = useState([])
-  const [lowStock, setLowStock] = useState([])
+  const [summary, setSummary] = useState<{
+    totalRevenue: number;
+    totalExpenses: number;
+    grossProfit: number;
+    netProfit: number;
+    inventoryValue: number;
+    productCount: number;
+  } | null>(null)
+  const [recentSales, setRecentSales] = useState<any[]>([])
+  const [lowStock, setLowStock] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -37,7 +44,7 @@ export default function DashboardPage() {
         .select('amount')
         .gte('date', last30DaysStr)
       
-      const totalExpenses = expensesData?.reduce((sum, e) => sum + parseFloat(e.amount), 0) || 0
+      const totalExpenses = expensesData?.reduce((sum: number, e: any) => sum + parseFloat(e.amount), 0) || 0
 
       // Sales data
       const { data: salesData } = await supabase
@@ -45,9 +52,9 @@ export default function DashboardPage() {
         .select('total_revenue, total_cost, profit')
         .gte('date', last30DaysStr)
       
-      const totalRevenue = salesData?.reduce((sum, s) => sum + parseFloat(s.total_revenue), 0) || 0
-      const totalProductCost = salesData?.reduce((sum, s) => sum + parseFloat(s.total_cost), 0) || 0
-      const grossProfit = salesData?.reduce((sum, s) => sum + parseFloat(s.profit), 0) || 0
+      const totalRevenue = salesData?.reduce((sum: number, s: any) => sum + parseFloat(s.total_revenue), 0) || 0
+      const totalProductCost = salesData?.reduce((sum: number, s: any) => sum + parseFloat(s.total_cost), 0) || 0
+      const grossProfit = salesData?.reduce((sum: number, s: any) => sum + parseFloat(s.profit), 0) || 0
 
       // Net profit = Gross Profit - Total Expenses
       const netProfit = grossProfit - totalExpenses
@@ -62,7 +69,7 @@ export default function DashboardPage() {
           )
         `)
       
-      const inventoryValue = inventoryData?.reduce((sum, i) => {
+      const inventoryValue = inventoryData?.reduce((sum: number, i: any) => {
         return sum + (i.quantity * (i.products?.cost_per_unit || 0))
       }, 0) || 0
 
@@ -108,7 +115,7 @@ export default function DashboardPage() {
         .order('quantity', { ascending: true })
         .limit(10)
       
-      const lowStockFiltered = lowStockData?.filter(i => i.quantity <= i.reorder_level) || []
+      const lowStockFiltered = lowStockData?.filter((i: any) => i.quantity <= i.reorder_level) || []
       setLowStock(lowStockFiltered)
 
     } catch (err) {
@@ -229,7 +236,7 @@ export default function DashboardPage() {
           <h2 className="text-xl font-bold mb-4">Recent Sales</h2>
           <div className="space-y-2">
             {recentSales.length > 0 ? (
-              recentSales.map(sale => (
+              recentSales.map((sale: any) => (
                 <div key={sale.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
                   <div>
                     <p className="font-medium">{sale.products?.name}</p>
@@ -252,7 +259,7 @@ export default function DashboardPage() {
           <h2 className="text-xl font-bold mb-4">⚠️ Low Stock Alert</h2>
           <div className="space-y-2">
             {lowStock.length > 0 ? (
-              lowStock.map((item, idx) => (
+              lowStock.map((item: any, idx: number) => (
                 <div key={idx} className="flex justify-between items-center p-3 bg-red-50 rounded border border-red-200">
                   <div>
                     <p className="font-medium text-red-900">{item.products?.name}</p>

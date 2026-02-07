@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '../../lib/supabase'
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
@@ -279,9 +279,10 @@ export default function ProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map(product => {
+              {products.map((product: any) => {
                 const profitPerUnit = product.selling_price - product.cost_per_unit
-                const margin = ((profitPerUnit / product.selling_price) * 100).toFixed(1)
+                const marginNum = (profitPerUnit / product.selling_price) * 100
+                const margin = marginNum.toFixed(1)
                 return (
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="border p-3 font-medium">{product.name}</td>
@@ -291,7 +292,7 @@ export default function ProductsPage() {
                     <td className="border p-3 text-right">₱{parseFloat(product.cost_per_unit).toFixed(2)}</td>
                     <td className="border p-3 text-right font-semibold text-green-600">₱{profitPerUnit.toFixed(2)}</td>
                     <td className="border p-3 text-right">
-                      <span className={`font-semibold ${margin > 40 ? 'text-green-600' : margin > 20 ? 'text-yellow-600' : 'text-red-600'}`}>
+                      <span className={`font-semibold ${marginNum > 40 ? 'text-green-600' : marginNum > 20 ? 'text-yellow-600' : 'text-red-600'}`}>
                         {margin}%
                       </span>
                     </td>
